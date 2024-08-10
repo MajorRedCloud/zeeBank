@@ -1,16 +1,21 @@
 import type { Metadata } from "next";
-import { Inter as FontSans} from "next/font/google";
+import { Inter, IBM_Plex_Serif} from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils"
 
 export const metadata: Metadata = {
   title: "zeeBank",
   description: "A Banking System for all your payments.",
+  icons:{
+    icon: "/icons/logo.svg"
+  }
 };
 
-const fontSans = FontSans({
+const inter = Inter({subsets: ["latin"], variable: "--font-inter"});
+const ibmPlexSerif = IBM_Plex_Serif({
   subsets: ["latin"],
-  variable: "--font-sans",
+  weight: ["400", "700"],
+  variable: "--font-ibm-plex-serif",
 })
 
 export default function RootLayout({
@@ -21,8 +26,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body  className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
+          "",
+          `${inter.variable} ${ibmPlexSerif.variable}`
         )}>
         {children}
       </body>
