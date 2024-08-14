@@ -1,19 +1,20 @@
 import MobileNav from "@/components/MobileNav";
 import Sidebar from "@/components/Sidebar";
+import { getLoggedInUser } from "@/lib/actions";
 import { cn } from "@/lib/utils"
 import Image from "next/image";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   // demo data
-  const loggedIn = {firstname: 'John', lastname: 'Doe'}
+  const loggedInUser = await getLoggedInUser()
 
   return (
     <main className="flex h-screen w-full font-inter">
-        <Sidebar user={loggedIn}/>
+        <Sidebar user={loggedInUser}/>
 
         <div className="flex flex-col size-full">
           <div className="root-layout">
@@ -24,7 +25,7 @@ export default function RootLayout({
               alt="logo"
             />
             <div>
-              <MobileNav user={loggedIn}/>
+              <MobileNav user={loggedInUser}/>
             </div>
           </div>
         {children}

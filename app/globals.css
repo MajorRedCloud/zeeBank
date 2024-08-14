@@ -379,4 +379,7 @@
   .sidebar-label {
     @apply text-16 font-semibold text-black-2 max-xl:hidden;
   }
+  .placeholder-text {
+    @apply text-gray-500 !important;
+  }
 }
