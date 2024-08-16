@@ -174,3 +174,23 @@ export const States = [
     "Ladakh",
     "Jammu & Kashmir"
 ]
+
+export function formatDateOfBirth(dob:string) {
+  // Split the input string by '/'
+  const parts = dob.split('/');
+  
+  // Re-arrange the parts to match 'yyyy-mm-dd' format
+  const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+  
+  return formattedDate;
+}
+
+export function getFirstFiveDigits(postalCode: string): string {
+  // Ensure the postal code is exactly 6 digits
+  if (postalCode.length !== 6) {
+      throw new Error("Postal code must be exactly 6 digits.");
+  }
+
+  // Return the first 5 digits
+  return postalCode.substring(0, 5);
+}

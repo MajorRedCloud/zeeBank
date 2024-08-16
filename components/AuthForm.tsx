@@ -21,15 +21,17 @@ import CustomFormField from "./CustomFormField";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getLoggedInUser, signIn, signUp } from "@/lib/actions";
+import PlaidLink from "./PlaidLink";
+import { formatDateOfBirth, getFirstFiveDigits } from "@/constants";
 
 const authFormSchema = (type:string) => z.object({
   // sign-up
   firstName: type === 'sign-up' ? z.string().min(3) : z.string().optional(),
   lastName: type === 'sign-up' ? z.string().min(3) : z.string().optional(),
-  address: type === 'sign-up' ? z.string().max(50) : z.string().optional(),
+  address1: type === 'sign-up' ? z.string().max(50) : z.string().optional(),
   postalCode: type === 'sign-up' ? z.string().min(3).max(6) : z.string().optional(),
-  state: type === 'sign-up' ? z.string().min(3) : z.string().optional(),
-  dob: type === 'sign-up' ? z.string().min(3) : z.string().optional(),
+  state: type === 'sign-up' ? z.string() : z.string().optional(),
+  dateOfBirth: type === 'sign-up' ? z.string().min(3) : z.string().optional(),
   city: type === 'sign-up' ? z.string().min(3) : z.string().optional(),
   
   // both
@@ -52,10 +54,10 @@ const AuthForm = ({ type }: { type: string }) => {
       password: "",
       firstName: "",
       lastName: "",
-      address: "",
+      address1: "",
       postalCode: "",
       state: "",
-      dob: "",
+      dateOfBirth: "",
       city: ""
     },
   });
@@ -65,7 +67,18 @@ const AuthForm = ({ type }: { type: string }) => {
     setIsLoading(true);
     
     if(type === 'sign-up'){
-      const newUser = await signUp(values)
+      const userData = {
+        firstName: values.firstName!,
+        lastName: values.lastName!,
+        email: values.email,
+        password: values.password,
+        address1: values.address1!,
+        city: values.city!,
+        state: 'TX',
+        postalCode: getFirstFiveDigits(values.postalCode!),
+        dateOfBirth: formatDateOfBirth(values.dateOfBirth!)
+      }
+      const newUser = await signUp(userData)
       setUser(newUser)
     }
 
@@ -108,14 +121,16 @@ const AuthForm = ({ type }: { type: string }) => {
         </div>
       </header>
       {user ? (
-        <div className="flex flex-col gap-4">{/* plaid link */}</div>
+        <div className="flex flex-col gap-4">
+          <PlaidLink user={user} variant='primary'/>
+        </div>
       ) : (
         <>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               {type === "sign-up" && (
                 <>
-                <div className="flex justify-between">
+                <div className="flex justify-between gap-3">
                   <CustomFormField
                     form={form}
                     name="firstName"
@@ -131,7 +146,7 @@ const AuthForm = ({ type }: { type: string }) => {
                 </div>
                   <CustomFormField
                     form={form}
-                    name="address"
+                    name="address1"
                     label="Address"
                     placeholder="123, Main Street"
                   />
@@ -141,7 +156,7 @@ const AuthForm = ({ type }: { type: string }) => {
                     label="City"
                     placeholder="ex: Mumbai"
                   />
-                  <div className="flex justify-between">
+                  <div className="flex justify-between gap-3">
                   <CustomFormField
                     form={form}
                     name="state"
@@ -157,7 +172,7 @@ const AuthForm = ({ type }: { type: string }) => {
                   </div>
                   <CustomFormField
                     form={form}
-                    name="dob"
+                    name="dateOfBirth"
                     label="Date of Birth"
                     placeholder="dd/mm/yyyy"
                   />
@@ -167,7 +182,7 @@ const AuthForm = ({ type }: { type: string }) => {
                 form={form}
                 name="email"
                 label="Email"
-                placeholder="Enter your email address"
+                placeholder="Enter your email address1"
               />
               <CustomFormField
                 form={form}
