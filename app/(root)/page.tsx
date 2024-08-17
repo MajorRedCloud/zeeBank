@@ -7,6 +7,11 @@ import { redirect } from 'next/navigation'
 import { getAccount, getAccounts } from '@/lib/bank.actions'
 import RecentTransactions from '@/components/RecentTransactions'
 
+export const getTransactions = async (appwriteItemId: string) => {
+  const account = await getAccount({appwriteItemId})
+  return account?.transactions
+}
+
 const Home = async ({searchParams: {id, page}}: SearchParamProps) => {
 
   const currentPage = Number(page as string) || 1
@@ -18,9 +23,9 @@ const Home = async ({searchParams: {id, page}}: SearchParamProps) => {
 
   const accounts = await getAccounts({ userId: loggedInUser?.userId })
  
-  const appwriteItemId = accounts?.data[0]?.appwriteItemId;
+  const appwriteItemId = (id as string) || accounts?.data[0]?.appwriteItemId;
 
-  const account = await getAccount({appwriteItemId})
+  const transactions = await getTransactions(appwriteItemId)
 
   return (
     <section className='home'>
@@ -44,7 +49,7 @@ const Home = async ({searchParams: {id, page}}: SearchParamProps) => {
 
         <RecentTransactions 
           accounts={accounts?.data}
-          transactions={account?.transactions}
+          transactions={transactions}
           appwriteItemId={appwriteItemId}
           page={currentPage}
         />

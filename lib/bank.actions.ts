@@ -22,7 +22,6 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
     
     // get banks from db
     const banks = await getBanks({ userId });
-
     const accounts = await Promise.all(
       banks?.map(async (bank: Bank) => {
         // get each account info from plaid
@@ -47,7 +46,7 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
           type: accountData.type as string,
           subtype: accountData.subtype! as string,
           appwriteItemId: bank.$id,
-          sharableId: bank.sharableId,
+          shareableId: bank.shareableId,
         };
 
         return account;

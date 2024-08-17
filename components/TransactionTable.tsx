@@ -61,7 +61,7 @@ const TransactionTable = ({ transactions }: TransactionTableProps) => {
                 {isDebit ? `-${amount}` : isCredit ? amount : amount}
               </TableCell>
 
-              <TableCell className="pl-2 pr-10">
+              <TableCell className="pl-2 pr-10 min-w-[130px]">
                 <CategoryBadge category={status} />
               </TableCell>
 
@@ -71,7 +71,7 @@ const TransactionTable = ({ transactions }: TransactionTableProps) => {
 
               <TableCell className="pl-2 pr-10 capitalize min-w-24">{trans.paymentChannel}</TableCell>
 
-              <TableCell className="pl-2 pr-10 max-md:hidden">
+              <TableCell className="pl-2 pr-3 max-md:hidden min-w-[140px]">
                 <CategoryBadge category={trans.category} />
               </TableCell>
             </TableRow>
