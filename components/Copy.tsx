@@ -15,8 +15,6 @@ const Copy = ({ title }: { title: string }) => {
     }, 2000);
   };
 
-  console.log(title)
-
   return (
     <Button
       data-state="closed"

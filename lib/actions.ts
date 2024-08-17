@@ -280,3 +280,22 @@ export const getBank = async ({documentId}:{documentId:string}) => {
   }
 }
 
+export const getBankByAccountId = async ({accountId}:{accountId:string}) => {
+  try {
+    const {database} = await createAdminClient()
+
+    const response =  await database.listDocuments(
+      process.env.DATABASE_ID!,
+      process.env.COLLECTIONS_BANKS_ID!,
+      [
+        Query.equal('accountId', accountId),
+      ]
+    )
+
+    if (response.total !== 1) return null
+
+    return parseStringify(response.documents[0])
+  } catch (error) {
+    console.error("getBanks error", error);
+  }
+}
