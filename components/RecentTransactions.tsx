@@ -1,16 +1,23 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BankTabItem } from "./BanksTabsItem";
 import BankInfo from "./BankInfo";
 import TransactionTable from "./TransactionTable";
 import { getTransactions } from "@/app/(root)/page";
+import { Pagination } from "./Pagination";
 
 const RecentTransactions = ({
   accounts,
   appwriteItemId,
   page = 1,
 }: RecentTransactionsProps) => {
+
+  const rowsPerPage = 10
+
+  const indexOfLastTransaction = page * rowsPerPage
+  const indexOfFirstTransaction = indexOfLastTransaction - rowsPerPage
+
   return (
     <section className="flex w-full flex-col gap-6">
       <header className="flex items-center justify-between">
@@ -39,6 +46,11 @@ const RecentTransactions = ({
 
         {accounts.map(async (account:Account) => {
           const transactions = await getTransactions(account.appwriteItemId)
+          
+          const totalPages = Math.ceil(transactions.length / rowsPerPage)
+
+          const currentTransactions = transactions.slice(indexOfFirstTransaction, indexOfLastTransaction)
+
           return (
             <TabsContent
                 key={account.id}
@@ -50,8 +62,13 @@ const RecentTransactions = ({
                     appwriteItemId={appwriteItemId}
                     type="full" />
 
-                <TransactionTable transactions={transactions}/>
-                    
+                <TransactionTable transactions={currentTransactions}/>
+
+                {totalPages > 1 && (
+                <div className="my-4 w-full">
+                  <Pagination totalPages={totalPages} page={page}/>
+                </div>
+                )}
             </TabsContent>
         )})}
           

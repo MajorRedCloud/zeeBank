@@ -52,15 +52,14 @@ const MobileNav = ({ user }: MobileNavProps) => {
 
                   return (
                     <SheetClose asChild key={item.label}>
-                    <Link
-                      href={item.route}
-                      key={item.label}
-                      className={cn(
-                        "mobilenav-sheet_close w-full",
-                        isActive ? "bg-bank-gradient" : ""
-                      )}
-                    >
-                      
+                      <Link
+                        href={item.route}
+                        key={item.label}
+                        className={cn(
+                          "mobilenav-sheet_close w-full",
+                          isActive ? "bg-bank-gradient" : ""
+                        )}
+                      >
                         <Image
                           src={item.imgURL}
                           alt="icon"
@@ -70,24 +69,23 @@ const MobileNav = ({ user }: MobileNavProps) => {
                             isActive ? "brightness-[3] invert-0" : ""
                           )}
                         />
-                    
-                      <p
-                        className={cn(
-                          "text-16 font-semibold text-black-2",
-                          isActive ? "!text-white" : ""
-                        )}
-                      >
-                        {item.label}
-                      </p>
-                    </Link>
+
+                        <p
+                          className={cn(
+                            "text-16 font-semibold text-black-2",
+                            isActive ? "!text-white" : ""
+                          )}
+                        >
+                          {item.label}
+                        </p>
+                      </Link>
                     </SheetClose>
                   );
                 })}
-
                 User
               </nav>
             </SheetClose>
-            <Footer user={user} type="mobile"/>
+            <Footer user={user} type="mobile" />
           </div>
         </SheetContent>
       </Sheet>

@@ -2,8 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import BankCard from "./BankCard";
+import { countTransactionCategories } from "@/lib/utils";
+import Category from "./Category";
 
 const RightSidebar = ({ user, transactions, banks }: RightSidebarProps) => {
+
+  const categories : CategoryCount[] = countTransactionCategories(transactions);
+
   return (
     <aside className="right-sidebar">
       <section className="flex flex-col pb-8">
@@ -16,9 +21,7 @@ const RightSidebar = ({ user, transactions, banks }: RightSidebarProps) => {
           </div>
 
           <div className="profile-details">
-            <h1 className="profile-name">
-              {user?.firstName}
-            </h1>
+            <h1 className="profile-name">{user?.firstName}</h1>
             <p className="profile-email">{user.email}</p>
           </div>
         </div>
@@ -41,23 +44,35 @@ const RightSidebar = ({ user, transactions, banks }: RightSidebarProps) => {
         {banks?.length > 0 && (
           <div className="relative flex flex-col gap-5 flex-1 items-center justify-center">
             <div className="relative z-10">
-              <BankCard 
+              <BankCard
                 key={banks[0].id}
-                account = {banks[0]}
-                userName = {user?.firstName}
+                account={banks[0]}
+                userName={user?.firstName}
               />
             </div>
             {banks[1] && (
               <div className="absolute right-0 top-8 z-0 w-[90%]">
-                <BankCard 
-                key={banks[0].id}
-                account = {banks[0]}
-                userName = {user?.firstName}
-              />
+                <BankCard
+                  key={banks[0].id}
+                  account={banks[0]}
+                  userName={user?.firstName}
+                />
               </div>
             )}
           </div>
         )}
+
+        <div className="mt-10 flex flex-1 flex-col gap-6">
+          <h2 className="header-2">
+            Top Categories
+          </h2>
+
+          <div className="space-y-5">
+            {categories.map((c,i) => (
+              <Category key={c.name} category={c} />
+            ))}
+          </div>
+        </div>
       </section>
     </aside>
   );
